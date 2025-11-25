@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No More Reality</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="logo-mb" href="flag.svg">
+
+</head>
+
+<body class="No More Reality">
+    <header>
+        <h1><a href="/"><img src="logo-mb.svg" alt="melvin bavarois logo" width="104" height="104"></a></h1>
+        <style>
+            .item-easy,
+            .item-cible {
+                transition: all 1s;
+            }
+
+            .item-easy:hover {
+                cursor: pointer;
+                ;
+                transform: scale(0.4) rotate(70deg);
+            }
+
+            .item {
+                display: grid;
+                place-items: center;
+                color: antiquewhite;
+                text-decoration: none;
+                background: black;
+                font-size: 40px;
+            }
+        </style>
+
+    </header>
+
+    <p>travail en collaboration avec <a href="https://rvygnn.github.io/">Lou Dhérin</a></p>
+    
+      <h1>Journée d'étude au CNAM sur la thématique: No More Reality</h1>
+    <br>
+    <p>Réalisation d'affiches pour la JDE</p>
+    <br>
+    <br>
+    <p></p>
+    <br>
+    <br>
+
+    <div style="text-align: center;">
+    <img src="nmr1.jpeg" width="500">
+    <p></p>
+    </div>
+
+    <br>
+    <br>
+
+    <div style="text-align: center;">
+        <img src="nmr2.jpeg" width="500"> <p></p>
+    </div>
+
+    <br>
+    <br>
+
+    <div style="text-align: center;">
+        <img src="nmr3.jpeg" width="500"> <p></p>
+    </div>
+
+    <br>
+    <br>
+
+     <div style="text-align: center;">
+        <img src="nmr4.jpeg" width="500"> <p></p>
+    </div>
+
+
+
+    <div class="custom-cursor"></div>
+    <div class="cursor-dot"></div>
+
+
+</body>
+
+<script>
+      
+        const cursor = document.querySelector('.custom-cursor');
+        const cursorDot = document.querySelector('.cursor-dot');
+        
+
+        document.addEventListener('mousemove', (e) => {
+            cursorDot.style.left = e.clientX + 'px';
+            cursorDot.style.top = e.clientY + 'px';
+            
+            setTimeout(() => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            }, 50);
+        });
+
+        const hoverElements = document.querySelectorAll('a, button, .project-card');
+        
+        hoverElements.forEach(elem => {
+            elem.addEventListener('mouseenter', () => {
+                document.body.classList.add('hovering');
+            });
+            
+            elem.addEventListener('mouseleave', () => {
+                document.body.classList.remove('hovering');
+            });
+        });
+
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+    </script>
+</html>

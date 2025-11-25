@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flipbook — Effet pages qui tournent</title>
+  <style>
+    /* Reset simple */
+    * { box-sizing: border-box; }
+    html,body { height:100%; margin:0; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:#1b1b1f; color:#fff; }
+
+    /* Conteneur centré sur la page */
+    .stage {
+      height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap: 24px;
+      padding: 24px;
+    }
+
+    /* Livre */
+    .book {
+      width: 760px;            /* largeur totale du livre */
+      max-width: 95vw;
+      height: 480px;           /* hauteur du livre */
+      perspective: 2000px;     /* profondeur 3D */
+      position: relative;
+    }
+
+    /* Pile de pages (ordre visuel) */
+    .pages {
+      width:100%; height:100%; position:relative; transform-style:preserve-3d;
+    }
+
+    /* Chaque page */
+    .page {
+      width:50%;                /* une page fait la moitié du livre */
+      height:100%;
+      position:absolute;
+      top:0;
+      left:50%;                 /* la page est positionnée sur la droite du livre par défaut */
+      transform-origin: left center; /* on plie depuis le côté gauche pour simuler la page droite qui tourne vers la gauche */
+      transform-style: preserve-3d;
+      transition: transform 800ms cubic-bezier(.2,.9,.2,1), z-index 0ms linear 800ms;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+      background: linear-gradient(180deg,#f8f6f3,#eae6e1);
+      overflow: hidden;
+      border-radius: 6px;
+    }
+
+    /* Calque avant et arrière de la page */
+    .page__side {
+      position:absolute; inset:0; backface-visibility: hidden; display:flex; align-items:center; justify-content:center; overflow:hidden;
+    }
+
+    .page__front { /* côté visible quand page non tournée */ }
+    .page__back  { transform: rotateY(180deg); }
+
+    /* Quand la page est tournée */
+    .page.flipped { transform: rotateY(-180deg); z-index: 1; transition-timing-function: cubic-bezier(.2,.9,.2,1); }
+
+    /* Images dans les faces */\    
+    .page__side img { width:100%; height:100%; object-fit:cover; display:block; }
+
+    /* Empilement des pages pour l'effet livre (plus haut = devant) */
+    .page[data-index="1"] { z-index: 20; left:50%; }
+    .page[data-index="2"] { z-index: 18; left:50%; transform-origin:left center; }
+    .page[data-index="3"] { z-index: 16; left:50%; }
+    .page[data-index="4"] { z-index: 14; left:50%; }
+
+    /* Page du côté gauche (couverture gauche) */
+    .spine { position:absolute; left:0; top:0; width:50%; height:100%; pointer-events:none; }
+
+    /* Contrôles */
+    .controls { display:flex; gap:12px; flex-direction:column; align-items:center; }
+    .btn { background:#222; color:#fff; border:0; padding:10px 14px; border-radius:6px; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,0.5); }
+    .btn:active{ transform:translateY(1px); }
+
+    /* Info */
+    .hint { font-size:13px; color:#cfcfcf; margin-top:8px; text-align:center; }
+
+    /* Responsive: diminuer hauteur pour petits écrans */
+    @media (max-width:600px){
+      .book { height: 320px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stage">
+
+    <!-- Livre -->
+    <div class="book" id="book">
+      <div class="pages" id="pages">
+
+        <!-- Page 1 (couverture avant droite) -->
+        <div class="page" data-index="1">
+          <div class="page__side page__front">
+            <img src="images/page1-front.jpg" alt="Couverture avant">
+          </div>
+          <div class="page__side page__back">
+            <img src="images/page1-back.jpg" alt="Intérieur couverture avant">
+          </div>
+        </div>
+
+        <!-- Page 2 -->
+        <div class="page" data-index="2">
+          <div class="page__side page__front">
+            <img src="images/page2-front.jpg" alt="Page 2 front">
+          </div>
+          <div class="page__side page__back">
+            <img src="images/page2-back.jpg" alt="Page 2 back">
+          </div>
+        </div>
+
+        <!-- Page 3 -->
+        <div class="page" data-index="3">
+          <div class="page__side page__front">
+            <img src="images/page3-front.jpg" alt="Page 3 front">
+          </div>
+          <div class="page__side page__back">
+            <img src="images/page3-back.jpg" alt="Page 3 back">
+          </div>
+        </div>
+
+        <!-- Page 4 (dernière) -->
+        <div class="page" data-index="4">
+          <div class="page__side page__front">
+            <img src="images/page4-front.jpg" alt="Page 4 front">
+          </div>
+          <div class="page__side page__back">
+            <img src="images/page4-back.jpg" alt="Page 4 back">
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Contrôles simples -->
+    <div class="controls">
+      <button class="btn" id="prev">← Page précédente</button>
+      <button class="btn" id="next">Page suivante →</button>
+      <div class="hint">Utilise les flèches ← → ou clique sur les boutons.<br>Sur mobile, tape à gauche/droite du livre.</div>
+    </div>
+
+  </div>
+
+  <script>
+    /* Script simple pour contrôler le flipbook
+       - Chaque "page" est une feuille qui se retourne (flip) en ajoutant la classe .flipped
+       - On parcourt de 0 à pages.length (nombre de pages tournées)
+    */
+
+    (function(){
+      const pages = Array.from(document.querySelectorAll('.page'));
+      const nextBtn = document.getElementById('next');
+      const prevBtn = document.getElementById('prev');
+      let current = 0; // nombre de pages tournées depuis la couverture
+
+      // Assigner ordre visuel (z-index) depuis la pile afin d'avoir une logique simple
+      pages.forEach((p, i) => {
+        // Les pages sont empilées du plus grand z-index (au dessus) vers le dessous
+        const order = (pages.length - i) * 2;
+        p.style.zIndex = order;
+      });
+
+      function goTo(pageCount) {
+        // clamp
+        pageCount = Math.max(0, Math.min(pageCount, pages.length));
+        current = pageCount;
+        // Flip the first `current` pages
+        pages.forEach((p, i) => {
+          if (i < current) {
+            p.classList.add('flipped');
+            // laisser au premier plan pendant l'animation
+            p.style.zIndex = 100 + (pages.length - i);
+          } else {
+            p.classList.remove('flipped');
+            p.style.zIndex = (pages.length - i) * 2;
+          }
+        });
+      }
+
+      nextBtn.addEventListener('click', () => goTo(current + 1));
+      prevBtn.addEventListener('click', () => goTo(current - 1));
+
+      // Support clavier
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') goTo(current + 1);
+        if (e.key === 'ArrowLeft') goTo(current - 1);
+      });
+
+      // Support mobile tactile: tap gauche / droite
+      const book = document.getElementById('book');
+      book.addEventListener('click', (e) => {
+        const rect = book.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        if (x < rect.width * 0.3) goTo(current - 1);
+        else if (x > rect.width * 0.7) goTo(current + 1);
+      });
+
+      // Initial state
+      goTo(0);
+
+    })();
+  </script>
+</body>
+</html>

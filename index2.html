@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melvin Bavarois - Portfolio Book</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none; /* On cache le curseur par défaut */
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Curseur personnalisé géant */
+        .custom-cursor {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            border: 3px solid #00d9ff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transition: all 0.15s ease;
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.6),
+                        inset 0 0 15px rgba(0, 217, 255, 0.3);
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-dot {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            background: #00d9ff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10001;
+            transition: all 0.1s ease;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px #00d9ff;
+        }
+
+        /* Effet hover sur le curseur */
+        body.hovering .custom-cursor {
+            width: 80px;
+            height: 80px;
+            border-color: #ff006e;
+            box-shadow: 0 0 30px rgba(255, 0, 110, 0.8);
+        }
+
+        /* Container principal avec perspective pour l'effet Star Wars */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            perspective: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Étoiles en arrière-plan animées */
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Titre style Star Wars avec perspective 3D */
+        .title-container {
+            transform: perspective(600px) rotateX(25deg);
+            transform-style: preserve-3d;
+            animation: crawl 3s ease-out forwards;
+        }
+
+        @keyframes crawl {
+            0% {
+                transform: perspective(600px) rotateX(25deg) translateY(100vh) scale(2);
+                opacity: 0;
+            }
+            100% {
+                transform: perspective(600px) rotateX(25deg) translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .main-title {
+            font-size: clamp(3rem, 12vw, 10rem);
+            font-weight: 900;
+            text-align: center;
+            background: linear-gradient(180deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            letter-spacing: 0.1em;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 3vw, 2rem);
+            text-align: center;
+            color: #00d9ff;
+            letter-spacing: 0.3em;
+            margin-top: 1rem;
+            text-transform: uppercase;
+            animation: fadeIn 2s ease-in 1s forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* Section portfolio avec effet glassmorphism */
+        .portfolio-section {
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(90deg, #00d9ff, #ff006e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Grille de projets avec hover effects */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: #00d9ff;
+            box-shadow: 0 20px 40px rgba(0, 217, 255, 0.3);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover .project-image {
+            transform: scale(1.05);
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #00d9ff;
+        }
+
+        .project-description {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        /* Bouton CTA moderne */
+        .cta-button {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.8rem 2rem;
+            background: linear-gradient(135deg, #00d9ff, #ff006e);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.3s ease;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.4);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Curseur personnalisé géant -->
+    <div class="custom-cursor"></div>
+    <div class="cursor-dot"></div>
+
+    <!-- Section Hero avec titre Star Wars -->
+    <section class="hero">
+        <!-- Étoiles animées en arrière-plan -->
+        <div class="stars" id="stars"></div>
+        
+        <div class="title-container">
+            <h1 class="main-title">BOOK<br>CREATED BY<br>MELVIN BAVAROIS</h1>
+        </div>
+        <p class="subtitle">Graphic Designer</p>
+    </section>
+
+
+</body>
+<script>
+        // Gestion du curseur personnalisé géant
+        const cursor = document.querySelector('.custom-cursor');
+        const cursorDot = document.querySelector('.cursor-dot');
+        
+        // Le curseur suit la souris avec un léger délai pour l'effet fluide
+        document.addEventListener('mousemove', (e) => {
+            // Le point central suit directement
+            cursorDot.style.left = e.clientX + 'px';
+            cursorDot.style.top = e.clientY + 'px';
+            
+            // Le grand cercle suit avec un léger délai
+            setTimeout(() => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            }, 50);
+        });
+
+        // Effet hover sur les éléments cliquables
+        const hoverElements = document.querySelectorAll('a, button, .project-card');
+        
+        hoverElements.forEach(elem => {
+            elem.addEventListener('mouseenter', () => {
+                document.body.classList.add('hovering');
+            });
+            
+            elem.addEventListener('mouseleave', () => {
+                document.body.classList.remove('hovering');
+            });
+        });
+
+        // Génération des étoiles en arrière-plan
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+    </script>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fc Renoir</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+
+<body class="Fc Renoir">
+    <header >
+        <h1><a href="/"><img src="logo-mb.svg" alt="melvin bavarois logo" width="104" height="104"></a></h1>
+
+        <style>
+        .item-easy, 
+        .item-cible{
+            transition: all 1s;
+        }
+        .item-easy:hover{
+            cursor: pointer;;
+            transform: scale(0.4) rotate(70deg);
+        }
+
+         .item{
+            display: grid;
+            place-items: center;
+            color: antiquewhite;
+            text-decoration: none;
+            background: black;
+            font-size: 40px;
+        }
+
+        </style>
+
+
+     </header>
+
+    <div class="custom-cursor"></div>
+    <div class="cursor-dot"></div>
+
+<td><span>Football Club Auguste Renoir </span>
+<td>: PROJET IDENTITÉ <span> </span>: OCTOBRE 2024- </td>
+<br>
+
+<img src="logo-fcr.svg"width: 30%;height: auto; alt="fcr">
+<br>
+<img src="logo-fcr-noir.svg" alt="logo noir">
+<br>
+<img src="logo-fcr-rose.svg" alt="logo rose">
+<img src="" width: 30%;height: auto; alt="logo-fcr">
+
+
+<script>
+      
+        const cursor = document.querySelector('.custom-cursor');
+        const cursorDot = document.querySelector('.cursor-dot');
+        
+
+        document.addEventListener('mousemove', (e) => {
+            cursorDot.style.left = e.clientX + 'px';
+            cursorDot.style.top = e.clientY + 'px';
+            
+            setTimeout(() => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            }, 50);
+        });
+
+        const hoverElements = document.querySelectorAll('a, button, .project-card');
+        
+        hoverElements.forEach(elem => {
+            elem.addEventListener('mouseenter', () => {
+                document.body.classList.add('hovering');
+            });
+            
+            elem.addEventListener('mouseleave', () => {
+                document.body.classList.remove('hovering');
+            });
+        });
+
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+    </script>
+</html>

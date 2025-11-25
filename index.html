@@ -3,52 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>portfolio Melvint</title>
-
+    <title>Melvin Bavarois Book</title>
     
-    <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://use.typekit.net/gnl0kno.css">
+<link rel="icon" type="logo-mb" href="flag.svg">
+    <img src="logo-mb.svg" alt="melvin bavarois logo" width="104" height="104">
+    <h1><span style="text-decoration: underline;">PORTFOLIO 2025</span></H2>
+
+
+<nav class="header-nav"> 
+            <a href="https://instagram.com/les_logos_de_melo">@compte pro</a>
+            <a href="https://instagram.com/fcrenoir">@fcrenoir</a>
+            <a href="cv.html">CV</a>
+        </nav>
+
+    <button onclick="playSound(3)">Activer le son</button><audio id="introSound">
+        
+    <source src="audio.mp3" type="audio"></audio>        
+
+
+
 
 </head>
-<body>
-    <header class="header">
-        <h1><a href="/"><img src="logo-mb.svg" alt="melvin bavarois logo" width="94" height="94"></a></h1>
-        <nav class="header-nav">
-            <a href="https://instagram.com/fcrenoir">instagram</a>
-            <a href="a-propos.html">à propos</a>
-        </nav>
-    </header>
 
-    <nav class="nav">
+
+
+<body>
+
+    <div class="custom-cursor"></div>
+    <div class="cursor-dot"></div>
+
+    <section class="hero">
+       
+        <div class="stars" id="stars"></div>
+        
+        <div class="title-container">
+            <h1 class="main-title">BOOK<br>CREATED BY<br>MELVIN BAVAROIS</h1>
+        </div>
+        <p class="subtitle">Budding Genius Designer</p>
+        <p class="subtitle">Coach Melo</p>
+
+    </section>
+
+    
+
+
+    <div style="width: 300px;"></div>
+    <nav class="nav">  
+
+
         <a href="chroniques.html">
-            <img src="https://picsum.photos/id/237/200/300" alt="lorem demo"><span>chroniques</span>
+            <img src="logo-bnf.gif" alt="bnf logo">
+            <span></span>
         </a>
-        <a href="eden-et-le-manteau-rouge">
-            <img src="https://picsum.photos/id/871/200/300" alt="lorem demo"><span>conte</span>
+    
+        <a href="eden.html">
+            <img src="eden couv.png"  alt="eden couv"><span></span>
         </a>
-        <a href="eden-et-le-manteau-rouge">
-            <img src="https://picsum.photos/id/100/200/300" alt="lorem demo"><span>conte</span>
+        
+        <a href="fcrenoir.html">
+            <img src="logo-fcr.gif" class="fcr logo" alt="logo-fcr">
+            <span></span>
         </a>
-        <a href="eden-et-le-manteau-rouge">
-            <img src="https://picsum.photos/id/900/200/300" alt="lorem demo"><span>conte</span>
+
+
+        <a href="nuit.html">
+            <img src="nuit.gif" alt="affiche nuit des musees"><span></span>
+        
         </a>
-        <a href="eden-et-le-manteau-rouge">
-            <img src="https://picsum.photos/id/250/200/300" alt="lorem demo"><span>conte</span>
+        <a href="">
+            <img src="table.png" alt="logo table"><span> A TABLE ! </span>
         </a>
-        <a href="eden-et-le-manteau-rouge">
-            <img src="https://picsum.photos/id/230/200/300" alt="lorem demo"><span>conte</span>
+
+        <a href="taslarecette.html">
+            <img src="tas.png" alt="taslarecette mockup"><span></span>
         </a>
-        <a href="eden-et-le-manteau-rouge">
-            <img src="https://picsum.photos/id/236/200/300" alt="lorem demo"><span>conte</span>
+
+        <a href="nomorereality.html">
+            <img src="nmr.gif" alt="gif"><span></span>
         </a>
-        <a href="eden-et-le-manteau-rouge">
-            <img src="https://picsum.photos/id/110/200/300" alt="lorem demo"><span>conte</span>
+
+        <a href="expo80.html">
+            <img src="" alt="expo80"><span></span>
         </a>
+        <a href="Vitra Design Museum"></a>
+        <img src="" alt=""><span></span>
+
+        <a href="changetondisque.html"></a>
+        <img src="" alt="">
 
     </nav>
 
 </body>
+
+<script>
+
+    function playSound() {
+    document.getElementById("introSound").play();
+}
+      
+        const cursor = document.querySelector('.custom-cursor');
+        const cursorDot = document.querySelector('.cursor-dot');
+        
+
+        document.addEventListener('mousemove', (e) => {
+            cursorDot.style.left = e.clientX + 'px';
+            cursorDot.style.top = e.clientY + 'px';
+            
+            setTimeout(() => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            }, 50);
+        });
+
+        const hoverElements = document.querySelectorAll('a, button, .project-card');
+        
+        hoverElements.forEach(elem => {
+            elem.addEventListener('mouseenter', () => {
+                document.body.classList.add('hovering');
+            });
+            
+            elem.addEventListener('mouseleave', () => {
+                document.body.classList.remove('hovering');
+            });
+        });
+
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+    </script>
 </html>
